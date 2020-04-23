@@ -32,6 +32,23 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.add_fab);
+        fabButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View view) {
+
+                // Create a new intent to start an AddTaskActivity
+
+                Intent addTaskIntent = new Intent(MainActivity.this, AddTaskActivity.class);
+
+                startActivity(addTaskIntent);
+
+            }
+
+        });
+
+
 
     }
 }
