@@ -1,6 +1,12 @@
 package com.github.mariemmezghani.mytodolist.Model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName="Task")
 public class Task {
+
+    @PrimaryKey(autoGenerate=true)
     private int id;
     private String description;
     public Task(int id, String description){
