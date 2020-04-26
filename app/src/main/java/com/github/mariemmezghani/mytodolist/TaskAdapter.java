@@ -49,6 +49,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
         return tasks.size();
     }
+    public void setList(List<Task> tasks){
+        this.tasks=tasks;
+
+    }
 
     class TaskViewHolder extends RecyclerView.ViewHolder {
         TextView taskDescriptionView;

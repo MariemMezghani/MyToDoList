@@ -8,12 +8,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.github.mariemmezghani.mytodolist.Database.AppDatabase;
+import com.github.mariemmezghani.mytodolist.Database.AppExecutors;
+import com.github.mariemmezghani.mytodolist.Model.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
     TaskAdapter mAdapter;
+    private AppDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +53,23 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
-
-
+        mDb=AppDatabase.getInstance(getApplicationContext());
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        //call the diskIo execute methodeand implement its run method
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                final List<Task> tasks=mDb.taskDao().loadAllTasks();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter.setList(tasks);
+                    }
+                });
+            }
+        });
     }
 }

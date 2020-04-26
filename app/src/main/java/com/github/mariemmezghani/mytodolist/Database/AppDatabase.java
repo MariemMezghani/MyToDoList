@@ -52,7 +52,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
 
 
-    public abstract Dao taskDao();
+    public abstract TaskDao taskDao();
 
 
 

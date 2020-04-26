@@ -1,6 +1,7 @@
 package com.github.mariemmezghani.mytodolist.Model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName="Task")
@@ -11,6 +12,10 @@ public class Task {
     private String description;
     public Task(int id, String description){
         this.id=id;
+        this.description=description;
+    }
+    @Ignore
+    public Task(String description){
         this.description=description;
     }
 
