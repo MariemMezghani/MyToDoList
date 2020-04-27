@@ -3,5 +3,7 @@
     <string name="add_task">addTask</string>
     <string name="edit_task_description">add a new task to do</string>
     <string name="add_button">add</string>
+    <string name="update_button">Update</string>
+
 
 </resources>

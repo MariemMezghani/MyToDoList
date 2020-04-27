@@ -1,5 +1,6 @@
 package com.github.mariemmezghani.mytodolist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.github.mariemmezghani.mytodolist.Database.AppDatabase;
@@ -16,7 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemClickListener {
 
     RecyclerView mRecyclerView;
     TaskAdapter mAdapter;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize the adapter and attach it to the RecyclerView
-        mAdapter=new TaskAdapter(this);
+        mAdapter=new TaskAdapter(this,this);
         mRecyclerView.setAdapter(mAdapter);
          /*
          Add a touch helper to the RecyclerView to recognize when a user swipes to delete an item.
@@ -105,4 +107,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onItemClickListener(int itemId) {
+        // Launch AddTaskActivity adding the itemId as an extra in the intent
+        Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
+        intent.putExtra(AddTaskActivity.EXTRA_TASK_ID, itemId);
+        startActivity(intent);
+
+    }
+
 }

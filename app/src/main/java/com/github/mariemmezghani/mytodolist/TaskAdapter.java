@@ -16,8 +16,12 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
     private Context mContext;
     private List<Task> tasks;
-    public TaskAdapter(Context context){
+    // Member variable to handle item clicks
+    final private ItemClickListener mItemClickListener;
+
+    public TaskAdapter(Context context, ItemClickListener listener){
         mContext=context;
+        mItemClickListener=listener;
     }
     @NonNull
     @Override
@@ -59,12 +63,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return tasks;
 
     }
-
-    class TaskViewHolder extends RecyclerView.ViewHolder {
+    public interface ItemClickListener {
+        void onItemClickListener(int itemId);
+    }
+    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView taskDescriptionView;
         public TaskViewHolder(View itemView) {
             super(itemView);
             taskDescriptionView = (TextView) itemView.findViewById(R.id.taskDescription);
+            itemView.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View view) {
+
+            int elementId = tasks.get(getAdapterPosition()).getId();
+            mItemClickListener.onItemClickListener(elementId);
 
         }
 

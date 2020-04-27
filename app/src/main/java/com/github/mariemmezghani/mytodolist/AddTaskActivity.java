@@ -1,6 +1,7 @@
 package com.github.mariemmezghani.mytodolist;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,8 @@ public class AddTaskActivity extends AppCompatActivity {
     public static final String INSTANCE_TASK_ID = "instanceTaskId";
     //constant for default tadk id
     private static final int DEFAULT_TASK_ID= -1;
+    // Extra for the task ID to be received in the intent
+    public static final String EXTRA_TASK_ID = "extraTaskId";
     private int mTaskId = DEFAULT_TASK_ID;
     EditText mEditText;
     Button mButton;
@@ -37,13 +40,9 @@ public class AddTaskActivity extends AppCompatActivity {
         mEditText = findViewById(R.id.editTextTaskDescription);
         mButton = findViewById(R.id.addButton);
         mButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
-
             public void onClick(View view) {
-
                 onClickAddTask();
-
             }
 
         });
@@ -51,6 +50,32 @@ public class AddTaskActivity extends AppCompatActivity {
 
             mTaskId = savedInstanceState.getInt(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
 
+        }
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(EXTRA_TASK_ID)) {
+            mButton.setText(R.string.update_button);
+            if (mTaskId == DEFAULT_TASK_ID) {
+                mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
+                //  Get the diskIO Executor from the instance of AppExecutors and
+                // call the diskIO execute method with a new Runnable and implement its run method
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Use the loadTaskById method to retrieve the task with id mTaskId and
+                        // assign its value to a final Task variable
+                        final Task task = mDb.taskDao().loadTaskById(mTaskId);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (task == null) {
+                                    return;
+                                }
+                                mEditText.setText(task.getDescription());
+                            }
+                        });
+                    }
+                });
+            }
         }
     }
     @Override
@@ -61,12 +86,18 @@ public class AddTaskActivity extends AppCompatActivity {
      //onClickAddTask is called when the "ADD" button is clicked.
     public void onClickAddTask() {
         String description = mEditText.getText().toString();
-        final Task taskEntry = new Task(description);
+        final Task task = new Task(description);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                mDb.taskDao().insertTask(taskEntry);
+                if (mTaskId==DEFAULT_TASK_ID) {
+                    mDb.taskDao().insertTask(task);
+                }else{
+                    task.setId(mTaskId);
+                    mDb.taskDao().updateTask(task);
+                }
                 finish();
+
             }
         });
 
