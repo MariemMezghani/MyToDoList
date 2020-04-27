@@ -1,6 +1,7 @@
 package com.github.mariemmezghani.mytodolist;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,8 +37,36 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the adapter and attach it to the RecyclerView
         mAdapter=new TaskAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
+         /*
+         Add a touch helper to the RecyclerView to recognize when a user swipes to delete an item.
+         An ItemTouchHelper enables touch behavior (like swipe and move) on each ViewHolder,
+         and uses callbacks to signal when a user is performing these actions.
+         */
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
-        FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.add_fab);
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+        // Called when a user swipes left or right on a ViewHolder
+        @Override
+        public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    //  get the position from the viewHolder parameter
+                    int position = viewHolder.getAdapterPosition();
+                    List<Task> tasks = mAdapter.getTasks();
+                    // Call deleteTask in the taskDao with the task at that position
+                    mDb.taskDao().deleteTask(tasks.get(position));
+                    // Call retrieveTasks method to refresh the UI
+                    retrieveTasks();
+                }
+            });
+        }
+    }).attachToRecyclerView(mRecyclerView);
+
+    FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.add_fab);
         fabButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -58,7 +87,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        //call the diskIo execute methodeand implement its run method
+        retrieveTasks();
+    }
+
+    private void retrieveTasks() {
+        //call the diskIo execute method and implement its run method
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
