@@ -3,11 +3,13 @@ package com.github.mariemmezghani.mytodolist;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.icu.lang.UCharacter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
         // Initialize the adapter and attach it to the RecyclerView
         mAdapter=new TaskAdapter(this,this);
         mRecyclerView.setAdapter(mAdapter);
+        DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
+
+        mRecyclerView.addItemDecoration(decoration);
          /*
          Add a touch helper to the RecyclerView to recognize when a user swipes to delete an item.
          An ItemTouchHelper enables touch behavior (like swipe and move) on each ViewHolder,
