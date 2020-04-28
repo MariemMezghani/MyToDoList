@@ -11,11 +11,16 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.github.mariemmezghani.mytodolist.Database.AppDatabase;
 import com.github.mariemmezghani.mytodolist.Database.AppExecutors;
 import com.github.mariemmezghani.mytodolist.Model.Task;
 import com.github.mariemmezghani.mytodolist.R;
+import com.github.mariemmezghani.mytodolist.ViewModel.AddTaskViewModel;
+import com.github.mariemmezghani.mytodolist.ViewModel.AddTaskViewModelFactory;
 
 public class AddTaskActivity extends AppCompatActivity {
 
@@ -56,25 +61,20 @@ public class AddTaskActivity extends AppCompatActivity {
             mButton.setText(R.string.update_button);
             if (mTaskId == DEFAULT_TASK_ID) {
                 mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
-                //  Get the diskIO Executor from the instance of AppExecutors and
-                // call the diskIO execute method with a new Runnable and implement its run method
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                AddTaskViewModelFactory factory = new AddTaskViewModelFactory(mDb, mTaskId);
+                final AddTaskViewModel viewModel
+                        = ViewModelProviders.of(this, factory).get(AddTaskViewModel.class);
+                viewModel.getTask().observe(this, new Observer<Task>() {
                     @Override
-                    public void run() {
-                        // Use the loadTaskById method to retrieve the task with id mTaskId and
-                        // assign its value to a final Task variable
-                        final Task task = mDb.taskDao().loadTaskById(mTaskId);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (task == null) {
-                                    return;
-                                }
-                                mEditText.setText(task.getDescription());
-                            }
-                        });
+                    public void onChanged(Task taskEntry) {
+                        viewModel.getTask().removeObserver(this);
+                        if (taskEntry == null) {
+                            return;
+                        }
+                        mEditText.setText(taskEntry.getDescription());
                     }
                 });
+
             }
         }
     }

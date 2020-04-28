@@ -1,5 +1,6 @@
 package com.github.mariemmezghani.mytodolist.Database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface TaskDao {
 
     @Query("SELECT * FROM task ORDER BY id")
-    List<Task> loadAllTasks();
+    LiveData<List<Task>> loadAllTasks();
 
     @Insert
     void insertTask(Task taskEntry);
@@ -29,5 +30,5 @@ public interface TaskDao {
     // Create a Query method named loadTaskById that receives an int id and returns a Task Object
     // The query for this method should get all the data for that id in the Task table
     @Query("SELECT * FROM Task WHERE id = :id")
-    Task loadTaskById(int id);
+    LiveData<Task> loadTaskById(int id);
 }
