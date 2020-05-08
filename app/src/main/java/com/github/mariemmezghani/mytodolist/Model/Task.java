@@ -17,8 +17,9 @@ public class Task {
         this.completed=completed;
     }
     @Ignore
-    public Task(String description){
+    public Task(String description, Boolean checked){
         this.description=description;
+        this.completed=checked;
     }
 
     public int getId() {

@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -81,7 +82,17 @@ public class AddTaskActivity extends AppCompatActivity {
      //onClickAddTask is called when the "ADD" button is clicked.
     public void onClickAddTask() {
         String description = mEditText.getText().toString();
-        final Task task = new Task(description);
+        Boolean checked;
+        if (mTaskId==DEFAULT_TASK_ID) {
+            checked=false;
+        }else{
+                    Task task = mDb.taskDao().loadTask(mTaskId);
+                    checked=task.isCompleted();
+
+
+                }
+
+            final Task task = new Task(description,checked);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

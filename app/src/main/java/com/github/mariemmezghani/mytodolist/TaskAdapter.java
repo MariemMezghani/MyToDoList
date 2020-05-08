@@ -1,6 +1,7 @@
 package com.github.mariemmezghani.mytodolist;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         Boolean isChecked=task.isCompleted();
         holder.taskDescriptionView.setText(description);
         holder.checkbox.setChecked(isChecked);
+        holder.taskDescriptionView.setPaintFlags(isChecked ? holder.taskDescriptionView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG : holder.taskDescriptionView.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+
     }
 
     @Override
