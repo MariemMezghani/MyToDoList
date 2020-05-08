@@ -1,17 +1,16 @@
 package com.github.mariemmezghani.mytodolist;
 
 import android.content.Context;
-import android.graphics.Paint;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.mariemmezghani.mytodolist.Database.AppDatabase;
+import com.github.mariemmezghani.mytodolist.Database.AppExecutors;
 import com.github.mariemmezghani.mytodolist.Model.Task;
 
 import java.util.List;
@@ -19,8 +18,7 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
     private Context mContext;
     private List<Task> tasks;
-    // to store the position of the checked item
-    SparseBooleanArray checkBoxStateArray = new SparseBooleanArray();
+
     // Member variable to handle item clicks
     final private ItemClickListener mItemClickListener;
 
@@ -44,14 +42,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         final Task task=tasks.get(position);
         String description=task.getDescription();
+        Boolean isChecked=task.isCompleted();
         holder.taskDescriptionView.setText(description);
-        if(!checkBoxStateArray.get(position,false)) {
-            //checkbox unchecked
-            holder.checkbox.setChecked(false);
-        } else {
-            //checkbox checked.
-            holder.checkbox.setChecked(true);
-        }
+        holder.checkbox.setChecked(isChecked);
     }
 
     @Override
@@ -77,27 +70,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView taskDescriptionView;
         CheckBox checkbox;
-        public TaskViewHolder(View itemView) {
+        public TaskViewHolder(final View itemView) {
             super(itemView);
             taskDescriptionView = (TextView) itemView.findViewById(R.id.taskDescription);
             checkbox=(CheckBox) itemView.findViewById(R.id.cbItemCheck);
             checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //getAdapterPosition returns clicked item position
-                    int position = getAdapterPosition();
-                    if(!checkBoxStateArray.get(position,false)) {
-                     //checkbox checked
-                        checkbox.setChecked(true);
-                        //checkbox state stored.
-                        checkBoxStateArray.put(position,true);
-                    }else {
-                     //checkbox unchecked.
-                     checkbox.setChecked(false);
-                     //checkbox state stored
-                     checkBoxStateArray.put(position,false);
-
-                    } } });
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                    int position=getAdapterPosition();
+                    Task task=tasks.get(position);
+                    task.setCompleted(checkbox.isChecked());
+                    AppDatabase.getInstance(itemView.getContext().getApplicationContext()).taskDao().updateTask(task);
+                }
+            });}});
             itemView.setOnClickListener(this);
         }
         @Override
