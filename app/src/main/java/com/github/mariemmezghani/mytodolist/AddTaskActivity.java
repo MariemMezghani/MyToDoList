@@ -89,7 +89,6 @@ public class AddTaskActivity extends AppCompatActivity {
                     Task task = mDb.taskDao().loadTask(mTaskId);
                     checked=task.isCompleted();
 
-
                 }
 
             final Task task = new Task(description,checked);

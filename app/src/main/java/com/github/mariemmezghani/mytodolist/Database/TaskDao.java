@@ -1,5 +1,6 @@
 package com.github.mariemmezghani.mytodolist.Database;
 
+import androidx.annotation.IntegerRes;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
