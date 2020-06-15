@@ -8,11 +8,18 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
+import androidx.appcompat.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.github.mariemmezghani.mytodolist.Database.AppDatabase;
 import com.github.mariemmezghani.mytodolist.Database.AppExecutors;
@@ -33,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+           // Status bar :: Transparent
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         // Set the RecyclerView to its corresponding view
         mRecyclerView = (RecyclerView) findViewById(R.id.toDoRecyclerView);
@@ -116,5 +126,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
         startActivity(intent);
 
     }
+
 
 }
