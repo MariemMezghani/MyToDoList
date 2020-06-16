@@ -14,14 +14,12 @@
             android:theme="@style/AppTheme.ActionBar.Transparent">
         <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!-- AddTaskActivity -->
-
         <activity
-
             android:name=".AddTaskActivity"
             android:theme="@style/AppTheme.ActionBar.Transparent"
             android:label="AddTaskActivity" />

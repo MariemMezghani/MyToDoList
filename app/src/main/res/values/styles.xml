@@ -9,6 +9,8 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="colorPrimary">@android:color/transparent</item>
+        <!-- this works only for API 19 and above -->
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="AppTheme.ActionBar" parent="AppTheme">

@@ -35,8 +35,11 @@ public class AddTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.add_activity);
+
+        // Status bar
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         mDb = AppDatabase.getInstance(getApplicationContext());
         mEditText = findViewById(R.id.editTextTaskDescription);
         mButton = findViewById(R.id.addButton);
