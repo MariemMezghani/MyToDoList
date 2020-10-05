@@ -5,16 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
 import com.github.mariemmezghani.mytodolist.Database.AppDatabase;
 import com.github.mariemmezghani.mytodolist.Database.AppExecutors;
 import com.github.mariemmezghani.mytodolist.Model.Task;
-import com.github.mariemmezghani.mytodolist.R;
 import com.github.mariemmezghani.mytodolist.ViewModel.AddTaskViewModel;
 import com.github.mariemmezghani.mytodolist.ViewModel.AddTaskViewModelFactory;
 
@@ -39,6 +35,9 @@ public class AddTaskActivity extends AppCompatActivity {
 
         // Status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+        setTitle("My Task");
 
         mDb = AppDatabase.getInstance(getApplicationContext());
         mEditText = findViewById(R.id.editTextTaskDescription);
@@ -77,11 +76,13 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState){
         outState.putInt(INSTANCE_TASK_ID,mTaskId);
         super.onSaveInstanceState(outState);
     }
+
      //onClickAddTask is called when the "ADD" button is clicked.
     public void onClickAddTask() {
         String description = mEditText.getText().toString();

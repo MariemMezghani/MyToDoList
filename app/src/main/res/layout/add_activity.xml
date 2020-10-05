@@ -6,25 +6,16 @@
     android:fitsSystemWindows="true">
 
     <!-- EditText for getting task description input -->
-
     <EditText
-
         android:id="@+id/editTextTaskDescription"
-
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
-
         android:gravity="start"
-
         android:hint="@string/edit_task_description"
-
         android:paddingBottom ="@dimen/activity_horizontal_margin"/>
 
     <!-- Add button -->
-
     <Button
-
         android:id="@+id/addButton"
         android:background="@drawable/add_button"
         android:layout_margin="@dimen/activity_horizontal_margin"

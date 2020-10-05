@@ -3,31 +3,18 @@ package com.github.mariemmezghani.mytodolist;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.appcompat.app.ActionBar;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-
 import com.github.mariemmezghani.mytodolist.Database.AppDatabase;
 import com.github.mariemmezghani.mytodolist.Database.AppExecutors;
 import com.github.mariemmezghani.mytodolist.Model.Task;
 import com.github.mariemmezghani.mytodolist.ViewModel.MainViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemClickListener {
@@ -41,16 +28,17 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
            // Status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setTitle("All Tasks");
 
         // Set the RecyclerView to its corresponding view
         mRecyclerView = (RecyclerView) findViewById(R.id.toDoRecyclerView);
 
         // Set the layout for the RecyclerView to be a linear layout, which measures and
         // positions items within a RecyclerView into a linear list
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize the adapter and attach it to the RecyclerView
         mAdapter=new TaskAdapter(this,this);
@@ -84,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
         }
     }).attachToRecyclerView(mRecyclerView);
 
+        //implement FAB
     FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.add_fab);
         fabButton.setOnClickListener(new View.OnClickListener() {
 
@@ -103,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
         mDb=AppDatabase.getInstance(getApplicationContext());
         setUpViewModel();
     }
+
     @Override
     protected void onResume(){
         super.onResume();

@@ -2,7 +2,6 @@ package com.github.mariemmezghani.mytodolist;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +9,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.github.mariemmezghani.mytodolist.Database.AppDatabase;
-import com.github.mariemmezghani.mytodolist.Database.AppExecutors;
 import com.github.mariemmezghani.mytodolist.Model.Task;
-import com.github.mariemmezghani.mytodolist.ViewModel.MainViewModel;
 
 import java.util.List;
 
@@ -37,8 +30,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate the task_layout to a view
 
+        // Inflate the task_layout to a view
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.task_layout, parent, false);
 

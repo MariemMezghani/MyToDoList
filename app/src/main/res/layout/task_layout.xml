@@ -9,7 +9,7 @@
     android:layout_margin="@dimen/activity_vertical_margin"
     card_view:cardElevation="8dp"
     card_view:cardBackgroundColor="#fff"
-    card_view:cardCornerRadius="5dp">
+    card_view:cardCornerRadius="20dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
