@@ -87,8 +87,11 @@ public class AddTaskActivity extends AppCompatActivity {
     public void onClickAddTask() {
         String description = mEditText.getText().toString();
         Boolean checked;
-        if ((description==null)||(description.length() <= 0)) { return;}
-            if (mTaskId==DEFAULT_TASK_ID) {
+        if ((description.length() <= 0)){
+            onBackPressed();
+            return;
+        }
+        if (mTaskId==DEFAULT_TASK_ID) {
             checked=false;
         }else{
                     Task task = mDb.taskDao().loadTask(mTaskId);
