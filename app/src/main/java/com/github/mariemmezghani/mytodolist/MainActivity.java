@@ -11,16 +11,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
 import com.github.mariemmezghani.mytodolist.Database.AppDatabase;
 import com.github.mariemmezghani.mytodolist.Database.AppExecutors;
 import com.github.mariemmezghani.mytodolist.Model.Task;
 import com.github.mariemmezghani.mytodolist.ViewModel.MainViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemClickListener {
     // Constant for logging
     private static final String TAG = MainActivity.class.getSimpleName();
+    private FirebaseAnalytics mFirebaseAnalytics;
     RecyclerView mRecyclerView;
     TaskAdapter mAdapter;
     private AppDatabase mDb;
@@ -30,10 +37,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
            // Status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         setTitle("All Tasks");
-
         // Set the RecyclerView to its corresponding view
         mRecyclerView = (RecyclerView) findViewById(R.id.toDoRecyclerView);
 
@@ -118,6 +127,5 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
         startActivity(intent);
 
     }
-
 
 }
